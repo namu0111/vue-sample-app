@@ -12,8 +12,7 @@
     </v-app-bar>
     <v-content>
       <SideNav/>
-      <v-container fluid fill-height align-start>
-        
+      <v-container align-start>
         <router-view/>
       </v-container>
     </v-content>
