@@ -3,6 +3,7 @@
         :mini-variant="$store.state.miniVariant"
         permanent
         clipped
+        absolute
     >
         <v-list dense>
             <v-list-item
