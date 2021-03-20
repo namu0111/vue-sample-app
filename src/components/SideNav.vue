@@ -2,6 +2,7 @@
     <v-navigation-drawer
         :mini-variant="$store.state.miniVariant"
         permanent
+        clipped
     >
         <v-list dense>
             <v-list-item
