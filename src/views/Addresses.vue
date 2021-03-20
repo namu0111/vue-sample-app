@@ -1,21 +1,25 @@
 <template>
   <v-container text-xs-center justify-center>
-    <v-layout row wrap>
-      <v-flex xs12>
-        <h1>連絡先一覧</h1>
-      </v-flex>
-
-      <v-flex xs12 mt-5 justify-center>
-        <v-data-table :headers='headers' :items='addresses'>
-          <template v-slot:items="props">
-            <td class="text-xs-left">{{ props.item.name }}</td>
-            <td class="text-xs-left">{{ props.item.tel }}</td>
-            <td class="text-xs-left">{{ props.item.email }}</td>
-            <td class="text-xs-left">{{ props.item.address }}</td>
-          </template>
-        </v-data-table>
-      </v-flex>
-    </v-layout>
+    <v-flex xs12>
+      <h1>連絡先一覧</h1>
+    </v-flex>
+    <v-flex xs12 mt-5 mr-5 text-right>
+      <router-link :to="{ name: 'address_edit' }">
+        <v-btn color="info">
+          連絡先追加
+        </v-btn>
+      </router-link>
+    </v-flex>
+    <v-flex xs12 mt-5 justify-center>
+      <v-data-table :headers='headers' :items='addresses'>
+        <template v-slot:items="props">
+          <td class="text-xs-left">{{ props.item.name }}</td>
+          <td class="text-xs-left">{{ props.item.tel }}</td>
+          <td class="text-xs-left">{{ props.item.email }}</td>
+          <td class="text-xs-left">{{ props.item.address }}</td>
+        </template>
+      </v-data-table>
+    </v-flex>
   </v-container>
 </template>
 
