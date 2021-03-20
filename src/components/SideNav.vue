@@ -9,7 +9,7 @@
             <v-list-item
                 v-for="item in items"
                 :key="item.title"
-                link
+                :to="item.link"
             >
                 <v-list-item-icon>
                 <v-icon>{{ item.icon }}</v-icon>
@@ -28,8 +28,8 @@
     data () {
       return {
         items: [
-          { title: 'Home', icon: 'mdi-home-city' },
-          { title: 'My Account', icon: 'mdi-account' },
+          { title: 'Home', icon: 'mdi-home-city', link: { name: 'home'} },
+          { title: 'My Account', icon: 'mdi-account', link: { name: 'addresses' } },
           { title: 'Users', icon: 'mdi-account-group-outline' },
         ],
       }
