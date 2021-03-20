@@ -1,19 +1,22 @@
 <template>
   <v-app>
     <v-app-bar
-      app
-      color="primary"
-      dark
+        app
+        color="primary"
+        dark
     >
-      <v-app-bar-nav-icon @click.stop="toggleSideMenu"></v-app-bar-nav-icon>
-      <v-toolbar-title>マイアドレス帳</v-toolbar-title>
-      <v-spacer></v-spacer>
-
+        <v-app-bar-nav-icon @click.stop="toggleSideMenu"></v-app-bar-nav-icon>
+        <v-toolbar-title>マイアドレス帳</v-toolbar-title>
+        <v-spacer></v-spacer>
+        
     </v-app-bar>
-
-      <v-content>
-        <SideNav/>
-      </v-content>
+    <v-content>
+      <SideNav/>
+      <v-container fluid fill-height align-start>
+        
+        <router-view/>
+      </v-container>
+    </v-content>
   </v-app>
 </template>
 
@@ -25,7 +28,7 @@ export default {
   name: 'App',
 
   components: {
-    SideNav
+    SideNav,
   },
 
   data: () => ({
