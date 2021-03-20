@@ -39,6 +39,6 @@ export default {
         'toggleSideMenu'
       ]
     )
-  }
+  },
 };
 </script>

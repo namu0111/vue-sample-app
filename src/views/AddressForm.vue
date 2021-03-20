@@ -39,7 +39,7 @@ export default {
           this.addAddress(this.address)
           this.$router.push({ name: 'addresses' })
           this.address = {}
-      }
+      },
     ...mapActions(
       [
         'addAddress'
