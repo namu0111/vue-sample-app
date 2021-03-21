@@ -42,10 +42,10 @@ export default {
       if (user) {
         this.setLoginUser(user)
         this.fetchAddresses()
-        if (this.$router.currentRoute.name === 'Login') this.$router.push({ name: 'home' })
+        if (this.$router.currentRoute.name === 'NoAuth') this.$router.push({ name: 'home' })
       }else{
         this.deleteLoginUser()
-        this.$router.push({ name: 'Login' })
+        this.$router.push({ name: 'NoAuth' })
       }
     }
     )

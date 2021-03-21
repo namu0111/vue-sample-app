@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Login from '../views/Login.vue'
+import NoAuth from '../views/NoAuth.vue'
 import Addresses from '../views/Addresses.vue'
 import AddressForm from '../views/AddressForm.vue'
 import firebase from 'firebase'
@@ -37,9 +37,9 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login,
+    path: '/no-auth',
+    name: 'NoAuth',
+    component: NoAuth,
   },
 ]
 
@@ -57,7 +57,7 @@ router.beforeEach((to, from, next) => {
         next()
       } else {
         next({
-          name: 'Login',
+          name: 'NoAuth',
         })
       }
     })
