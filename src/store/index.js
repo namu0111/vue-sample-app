@@ -21,7 +21,8 @@ export default new Vuex.Store({
     toggleSideMenu (state) {
       state.miniVariant = !state.miniVariant
     },
-    addAddress (state, address) {
+    addAddress (state, { id, address}) {
+      address.id = id
       state.addresses.push(address)
     },
   },
@@ -35,27 +36,29 @@ export default new Vuex.Store({
     login () {
       const google_auth_provider = new firebase.auth.GoogleAuthProvider()
       firebase.auth().signInWithRedirect(google_auth_provider)
+      
     },
     logout () {
       firebase.auth().signOut()
     },
-    onAuth({ commit }) {
-      firebase.auth().onAuthStateChanged(user => {
-          user = user ? user : {};
-          commit('onAuthStateChanged', user);
-          commit('onUserStatusChanged', user.uid ? true : false);
-      });
+    fetchAddresses ({ getters, commit }) {
+      firebase.firestore().collection(`users/${getters.uid}/addresses`).get().then(snapshot => {
+        snapshot.forEach(doc => commit('addAddress', { id: doc.id, address:  doc.data() }))
+      })
     },
     toggleSideMenu ({ commit }) {
       commit('toggleSideMenu')
     },
-    addAddress ({ commit }, address) {
-      commit('addAddress', address)
+    addAddress ({ getters, commit }, address) {
+      if (getters.uid) firebase.firestore().collection(`users/${getters.uid}/addresses`).add(address).then(doc => {
+        commit('addAddress', { id: doc.id, address} )
+      })
     },
   },
   getters: {
     userName: state => state.login_user ? state.login_user.displayName : '',
     uid: state => state.login_user ? state.login_user.uid : null,
+    getAddressById: state => id => state.addresses.find(address => address.id === id)
   },
   modules: {
   }
