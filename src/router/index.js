@@ -2,7 +2,6 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import { authGuard } from '../auth/authGuard';
 import Home from '../views/Home.vue'
-import NoAuth from '../views/NoAuth.vue'
 import Addresses from '../views/Addresses.vue'
 import AddressForm from '../views/AddressForm.vue'
 import Profile from "../views/Profile.vue";
