@@ -39,6 +39,7 @@ export default {
   },
   beforeUpdate () {
     this.setAuth0LoginUser();
+    this.fetchAddresses();
   },
   computed: {
     ...mapGetters(['userName',])

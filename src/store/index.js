@@ -21,8 +21,7 @@ export default new Vuex.Store({
     toggleSideMenu (state) {
       state.miniVariant = !state.miniVariant
     },
-    addAddress (state, { id, address}) {
-      address.id = id
+    addAddress (state, address) {
       state.addresses.push(address)
     },
     updateAddress (state, { id, address }) {
@@ -49,10 +48,8 @@ export default new Vuex.Store({
     toggleSideMenu ({ commit }) {
       commit('toggleSideMenu')
     },
-    addAddress ({ getters, commit }, address) {
-      if (getters.uid) firebase.firestore().collection(`users/${getters.uid}/addresses`).add(address).then(doc => {
-        commit('addAddress', { id: doc.id, address} )
-      })
+    addAddress ({ commit }, address) {
+      commit('addAddress', address)
     },
     updateAddress ({ getters, commit }, { id, address }) {
       if (getters.uid) {

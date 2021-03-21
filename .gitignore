@@ -24,3 +24,7 @@ pnpm-debug.log*
 
 # auth0 config
 auth_config.json
+
+.firebase/
+.github/
+.firebase/hosting.ZGlzdA.cache
