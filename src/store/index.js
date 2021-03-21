@@ -41,14 +41,6 @@ export default new Vuex.Store({
     deleteLoginUser ({ commit }) {
       commit('deleteLoginUser')
     },
-    login () {
-      const google_auth_provider = new firebase.auth.GoogleAuthProvider()
-      firebase.auth().signInWithRedirect(google_auth_provider)
-      
-    },
-    logout () {
-      firebase.auth().signOut()
-    },
     fetchAddresses ({ getters, commit }) {
       firebase.firestore().collection(`users/${getters.uid}/addresses`).get().then(snapshot => {
         snapshot.forEach(doc => commit('addAddress', { id: doc.id, address:  doc.data() }))
@@ -78,9 +70,9 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    userName: state => state.login_user ? state.login_user.displayName : '',
-    uid: state => state.login_user ? state.login_user.uid : null,
-    getAddressById: state => id => state.addresses.find(address => address.id === id)
+    userName: state => state.login_user ? state.login_user.name : '',
+    uid: state => state.login_user ? state.login_user.sub : null,
+    getAddressById: state => id => state.addresses.find(address => address.id === id),
   },
   modules: {
   }

@@ -3,27 +3,10 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
-// Import Firebase
-import firebase from 'firebase'
 // Import the Auth0 configuration
 import { domain, clientId } from "../auth_config.json";
 // Import the plugin here
 import { Auth0Plugin } from "./auth";
-
-Vue.config.productionTip = false
-
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyC1rHGUfRhbs91b65RIO7z37x8EZqGPBX8",
-  authDomain: "vue-sample-app-fca69.firebaseapp.com",
-  projectId: "vue-sample-app-fca69",
-  storageBucket: "vue-sample-app-fca69.appspot.com",
-  messagingSenderId: "249296077029",
-  appId: "1:249296077029:web:416617ead803d9f1c7940c",
-  measurementId: "G-J2F9P783CC"
-};
-
-firebase.initializeApp(firebaseConfig);
 
 // Install the authentication plugin here
 Vue.use(Auth0Plugin, {
