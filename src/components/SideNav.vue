@@ -35,7 +35,7 @@
         items: [
           { title: 'Home', icon: 'mdi-home-city', link: { name: 'home'} },
           { title: 'My Account', icon: 'mdi-card-account-mail-outline', link: { name: 'addresses' } },
-          { title: 'Profile', icon: 'mdi-account' },
+          { title: 'Profile', icon: 'mdi-account', link: { name: 'profile' }  },
         ],
       }
     },
