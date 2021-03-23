@@ -9,10 +9,10 @@
         <v-card>
           <v-card-text>
             <v-form>
-               <v-text-field v-model="address.name" label="名前"></v-text-field>
-               <v-text-field v-model="address.tel" label="電話番号"></v-text-field>
-               <v-text-field v-model="address.email" label="メールアドレス"></v-text-field>
-               <v-text-field v-model="address.address" label="住所"></v-text-field>
+               <v-text-field v-model="addresses.name" label="名前"></v-text-field>
+               <v-text-field v-model="addresses.tel" label="電話番号"></v-text-field>
+               <v-text-field v-model="addresses.email" label="メールアドレス"></v-text-field>
+               <v-text-field v-model="addresses.address" label="住所"></v-text-field>
                <div class="text-center">
                  <v-btn @click="$router.push({ name: 'addresses' })">キャンセル</v-btn>
                  <v-btn color="info" class="ml-2" @click="submit">保存</v-btn>
@@ -26,21 +26,67 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
+import gql from "graphql-tag";
+
+const ADD_CONTACT = gql`
+    mutation addContact(
+      $name: String!
+      $mail: String!
+      $telephone: String!
+      $address: String!
+      $created_by: String!
+    ){
+    insert_contacts(objects: [
+      {
+        name: $name, mail: $mail, telephone: $telephone, address: $address, created_by: $created_by
+        }
+      ])
+      {
+        returning {
+        id
+        }
+      }
+    }
+`;
 
 export default {
+  computed: {
+    ...mapGetters(['contactName','contactMail','contactTelephone','contactAddress', 'uid'])
+  },
   data () {
     return {
-      address: {}
+      name: null, 
+      mail: null, 
+      telephone: null, 
+      address: null,
+      created_by: null,
+      addresses: {}
     }
   },
   methods: {
-    submit () {
-      this.addAddress(this.address)
+    async submit () {
+      this.addAddress(this.addresses)
+      const name = this.$store.getters.contactName
+      const mail = this.$store.getters.contactMail
+      const telephone = this.$store.getters.contactTelephone
+      const address = this.$store.getters.contactAddress
+      const created_by = this.$store.getters.uid
+      this.$apollo.mutate({
+        mutation: ADD_CONTACT,
+        variables: {
+          name,
+          mail,
+          telephone,
+          address,
+          created_by,
+        },
+        refetchQueries: ["getContacts"]
+      });
       this.$router.push({ name: 'addresses' })
       this.address = {}
     },
     ...mapActions(['addAddress'])
-  }
-}
+  },
+};
 </script>

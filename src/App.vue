@@ -37,37 +37,38 @@ export default {
   components: {
     SideNav,
   },
+  created() {
+  },
   beforeUpdate () {
-    this.setAuth0LoginUser();
-    this.fetchAddresses();
+      this.setAuth0LoginUser();
+      console.log('Authenticated')    
   },
   computed: {
-    ...mapGetters(['userName',])
+    ...mapGetters(['uid',])
   },
   data: () => ({
     //
   }),
   methods: {
-    async login() {
-      await this.$auth.loginWithRedirect();
+    login() {
+      this.$auth.loginWithRedirect();
     },
-    async logout() {
-      await this.$auth.logout({
+    logout() {
+      this.$auth.logout({
         returnTo: window.location.origin  
       },);
-      console.log('Log out')
+      console.log('Not Authenticated')
     },
-    async setAuth0LoginUser(){
-        await this.setLoginUser(this.$auth.user)
+    setAuth0LoginUser(){
+        this.setLoginUser(this.$auth.user)
         console.log(this.$auth.user)
-        console.log(this.$store.getters.user)
+        console.log(this.$store.getters.uid)
     },
     ...mapActions(
       [
         'toggleSideMenu',
         'setLoginUser',
         'deleteLoginUser',
-        'fetchAddresses',
       ]
     )
   },

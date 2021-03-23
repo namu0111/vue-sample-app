@@ -2,8 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase'
 
-
 Vue.use(Vuex)
+
 
 export default new Vuex.Store({
   state: {
@@ -40,11 +40,6 @@ export default new Vuex.Store({
     deleteLoginUser ({ commit }) {
       commit('deleteLoginUser')
     },
-    fetchAddresses ({ getters, commit }) {
-      firebase.firestore().collection(`users/${getters.uid}/addresses`).get().then(snapshot => {
-        snapshot.forEach(doc => commit('addAddress', { id: doc.id, address:  doc.data() }))
-      })
-    },
     toggleSideMenu ({ commit }) {
       commit('toggleSideMenu')
     },
@@ -70,6 +65,10 @@ export default new Vuex.Store({
     userName: state => state.login_user ? state.login_user.name : '',
     uid: state => state.login_user ? state.login_user.sub : null,
     getAddressById: state => id => state.addresses.find(address => address.id === id),
+    contactName: state => state.addresses ? state.addresses[state.addresses.length -1].name : '',
+    contactMail: state => state.addresses ? state.addresses[state.addresses.length -1].email : '',
+    contactTelephone: state => state.addresses ? state.addresses[state.addresses.length -1].tel : '',
+    contactAddress: state => state.addresses ? state.addresses[state.addresses.length -1].address : '',
   },
   modules: {
   }

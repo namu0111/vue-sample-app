@@ -14,11 +14,11 @@
       </v-flex>
 
       <v-flex xs12 mt-5 justify-center>
-        <v-data-table :headers='headers' :items='addresses'>
+        <v-data-table :headers='headers' :items='contacts' loading-text="Loading... Please wait">
           <template v-slot:items="props">
             <td class="text-xs-left">{{ props.item.name }}</td>
-            <td class="text-xs-left">{{ props.item.tel }}</td>
-            <td class="text-xs-left">{{ props.item.email }}</td>
+            <td class="text-xs-left">{{ props.item.telephone }}</td>
+            <td class="text-xs-left">{{ props.item.mail }}</td>
             <td class="text-xs-left">{{ props.item.address }}</td>
           </template>
         </v-data-table>
@@ -28,20 +28,36 @@
 </template>
 
 <script>
+import gql from 'graphql-tag';
+
+const GET_CONTACTS = gql`
+  query getContacts {
+    contacts(order_by: {created_at: desc}) {
+      name
+      mail
+      telephone
+      address
+    }
+  }
+`;
+
 export default {
   created () {
-    this.addresses = this.$store.state.addresses
+
   },
   data () {
     return {
       headers: [
         { text: '名前', value: 'name' },
-        { text: '電話番号', value: 'tel' },
-        { text: 'メールアドレス', value: 'email' },
+        { text: '電話番号', value: 'telephone' },
+        { text: 'メールアドレス', value: 'mail' },
         { text: '住所', value: 'address' }
       ],
-      addresses: []
+      contacts: [],
     }
-  }
+  },
+  apollo: {
+    contacts: GET_CONTACTS
+  },
 }
 </script>

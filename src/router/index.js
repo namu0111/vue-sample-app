@@ -5,6 +5,7 @@ import Home from '../views/Home.vue'
 import Addresses from '../views/Addresses.vue'
 import AddressForm from '../views/AddressForm.vue'
 import Profile from "../views/Profile.vue";
+import Error from "../views/Error.vue";
 
 Vue.use(VueRouter)
 
@@ -40,6 +41,11 @@ const routes = [
     name: "profile",
     component: Profile,
     beforeEnter: authGuard,
+  },
+  {
+    path: "/error",
+    name: "error",
+    component: Error,
   },
 ]
 
