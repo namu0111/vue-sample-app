@@ -14,12 +14,12 @@
       </v-flex>
 
       <v-flex xs12 mt-5 justify-center>
-        <v-data-table :headers='headers' :items='contacts' loading-text="Loading... Please wait">
-          <template v-slot:items="props">
-            <td class="text-xs-left">{{ props.item.name }}</td>
-            <td class="text-xs-left">{{ props.item.telephone }}</td>
-            <td class="text-xs-left">{{ props.item.mail }}</td>
-            <td class="text-xs-left">{{ props.item.address }}</td>
+        <v-data-table :headers='headers' :items='contacts'>
+          <template v-slot:item.action="{ item }">
+            <router-link :to="{ name: 'address_edit', params: { address_id: item.id }}">
+              <v-icon small class="mr-2">mdi-pencil</v-icon>
+            </router-link>
+            <v-icon small class="mr-2" @click="deleteConfirm(item.id)">mdi-delete</v-icon>
           </template>
         </v-data-table>
       </v-flex>
@@ -33,6 +33,7 @@ import gql from 'graphql-tag';
 const GET_CONTACTS = gql`
   query getContacts {
     contacts(order_by: {created_at: desc}) {
+      id
       name
       mail
       telephone
@@ -51,7 +52,8 @@ export default {
         { text: '名前', value: 'name' },
         { text: '電話番号', value: 'telephone' },
         { text: 'メールアドレス', value: 'mail' },
-        { text: '住所', value: 'address' }
+        { text: '住所', value: 'address' },
+        { text: 'Action', value: 'action', sortable: false }
       ],
       contacts: [],
     }
