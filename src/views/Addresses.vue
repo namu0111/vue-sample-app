@@ -32,12 +32,13 @@ import gql from 'graphql-tag';
 
 const GET_CONTACTS = gql`
   query getContacts {
-    contacts(order_by: {created_at: desc}) {
+    contacts (order_by: {updated_at: desc}) {
       id
       name
       mail
       telephone
       address
+      updated_at
     }
   }
 `;
@@ -46,7 +47,7 @@ const DELETE_CONTACT = gql`
     mutation deleteContact(
         $id: Int!
     ) {
-        delete_contacts(where: {id: {_eq: $id}}){
+        deleteContacts(where: {id: {_eq: $id}}){
           affected_rows
         }
     }
@@ -76,6 +77,7 @@ export default {
         { text: '電話番号', value: 'telephone' },
         { text: 'メールアドレス', value: 'mail' },
         { text: '住所', value: 'address' },
+        { text: '更新日時', value: 'updated_at' },
         { text: 'Action', value: 'action', sortable: false }
       ],
       contacts: [],

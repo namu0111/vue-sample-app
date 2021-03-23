@@ -15,7 +15,8 @@
                <v-text-field v-model="addresses.address" label="住所"></v-text-field>
                <div class="text-center">
                  <v-btn @click="$router.push({ name: 'addresses' })">キャンセル</v-btn>
-                 <v-btn color="info" class="ml-2" @click="submit">保存</v-btn>
+                 <v-btn color="info" class="ml-2" @click="submit" v-if=!this.$route.params.address_id>保存</v-btn>
+                 <v-btn color="info" class="ml-2" @click="submit" v-if=this.$route.params.address_id>更新</v-btn>
                </div>
             </v-form>
           </v-card-text>
@@ -50,6 +51,23 @@ const ADD_CONTACT = gql`
     }
 `;
 
+const UPDATE_CONTACT = gql`
+mutation updateContact(
+      $id: Int!
+      $name: String!
+      $mail: String!
+      $telephone: String!
+      $address: String!
+    ){
+  update_contacts(where: {id: {_eq: $id}}, 
+  _set: {name: $name, mail: $mail, telephone: $telephone, address: $address}) {
+    returning {
+      id
+    }
+  }
+}
+`;
+
 export default {
   computed: {
     ...mapGetters(['contactName','contactMail','contactTelephone','contactAddress', 'uid'])
@@ -72,17 +90,36 @@ export default {
       const telephone = this.$store.getters.contactTelephone
       const address = this.$store.getters.contactAddress
       const created_by = this.$store.getters.uid
-      this.$apollo.mutate({
-        mutation: ADD_CONTACT,
-        variables: {
-          name,
-          mail,
-          telephone,
-          address,
-          created_by,
-        },
-        refetchQueries: ["getContacts"]
-      });
+      const id = this.$route.params.address_id
+      if (this.$route.params.address_id) {
+        console.log(this.$route.params.address_id)
+        this.$apollo.mutate({
+          mutation: UPDATE_CONTACT,
+          variables: {
+            id,
+            name,
+            mail,
+            telephone,
+            address,
+          },
+          refetchQueries: ["getContacts"]
+        });
+        console.log('update')
+      } else {
+        this.$apollo.mutate({
+          mutation: ADD_CONTACT,
+          variables: {
+            name,
+            mail,
+            telephone,
+            address,
+            created_by,
+          },
+          refetchQueries: ["getContacts"]
+        });
+        this.addAddress(this.address)
+        console.log('add')
+      }
       this.$router.push({ name: 'addresses' })
       this.address = {}
     },
