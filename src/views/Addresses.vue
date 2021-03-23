@@ -15,7 +15,7 @@
 
       <v-flex xs12 mt-5 justify-center>
         <v-data-table :headers='headers' :items='contacts'>
-          <template v-slot:item.action="{ item }">
+          <template v-slot:[`item.action`]="{ item }">
             <router-link :to="{ name: 'address_edit', params: { address_id: item.id }}">
               <v-icon small class="mr-2">mdi-pencil</v-icon>
             </router-link>
@@ -42,9 +42,32 @@ const GET_CONTACTS = gql`
   }
 `;
 
-export default {
-  created () {
+const DELETE_CONTACT = gql`
+    mutation deleteContact(
+        $id: Int!
+    ) {
+        delete_contacts(where: {id: {_eq: $id}}){
+          affected_rows
+        }
+    }
+`;
 
+export default {
+  methods: {
+    deleteConfirm (id) {
+        if (confirm('削除してよろしいですか？')) {
+          this.deleteContact(id)
+        }
+    },
+    deleteContact(id) {
+        this.$apollo.mutate({
+            mutation: DELETE_CONTACT,
+            variables: {
+                id
+            },
+            refetchQueries: ["getContacts"]
+        });            
+      },
   },
   data () {
     return {
