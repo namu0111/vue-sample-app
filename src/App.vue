@@ -37,19 +37,27 @@ export default {
   components: {
     SideNav,
   },
-  created() {
-  },
-  beforeUpdate () {
+  async beforeUpdate () {
+    if(this.$auth.isAuthenticated){ 
       this.setAuth0LoginUser();
-      console.log('Authenticated')    
+      await this.getClaims()
+    }else{
+      console.log('Not Authenticated')
+    } 
   },
   computed: {
     ...mapGetters(['uid',])
   },
   data: () => ({
-    //
+
   }),
   methods: {
+    async getClaims () {
+      const claims = await this.$auth.getIdTokenClaims();
+      const token = claims.__raw;
+      console.log('token:', token);
+      await this.setAuthToken(token);
+    },
     login() {
       this.$auth.loginWithRedirect();
     },
@@ -59,16 +67,17 @@ export default {
       },);
       console.log('Not Authenticated')
     },
-    setAuth0LoginUser(){
-        this.setLoginUser(this.$auth.user)
-        console.log(this.$auth.user)
-        console.log(this.$store.getters.uid)
+    async setAuth0LoginUser(){
+      const user = this.$auth.user
+      console.log('user info:', user)  
+      await this.setLoginUser(user);
     },
     ...mapActions(
       [
         'toggleSideMenu',
         'setLoginUser',
         'deleteLoginUser',
+        'setAuthToken',
       ]
     )
   },

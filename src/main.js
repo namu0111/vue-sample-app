@@ -7,39 +7,8 @@ import vuetify from './plugins/vuetify';
 import { domain, clientId } from "../auth_config.json";
 // Import the plugin here
 import { Auth0Plugin } from "./auth";
-import firebase from 'firebase'
 // GraphQL
-import { ApolloClient } from 'apollo-client';
-import { HttpLink } from 'apollo-link-http';
-import { InMemoryCache } from "apollo-cache-inmemory";
-import VueApollo from "vue-apollo";
-
-// GraphQL API
-const httpLink = new HttpLink({
-  uri: process.env.VUE_APP_HASURA_URL
-});
-
-const apolloClient = new ApolloClient({
-  link: httpLink,
-  // 実行したクエリをメモリにキャッシュします。
-  cache: new InMemoryCache(),
-  connectToDevTool: true
-});
-
-Vue.use(VueApollo);
-
-const apolloProvider = new VueApollo({
-  defaultClient: apolloClient
-});
-
-const firebaseConfig = {
-  apiKey: process.env.FIREBASE_APIKEY,
-  authDomain: process.env.FIREBASE_AUTHDOMAIN,
-  projectId: process.env.FIREBASE_PROJECTID,
-  measurementId: process.env.FIREBASE_MEASUREMETID
-};
-
-firebase.initializeApp(firebaseConfig);
+import { createProvider } from './vue-apollo';
 
 // Install the authentication plugin here
 Vue.use(Auth0Plugin, {
@@ -60,6 +29,6 @@ new Vue({
   router,
   store,
   vuetify,
+  apolloProvider: createProvider(),// GraphQL API
   render: h => h(App),
-  apolloProvider,
 }).$mount('#app')

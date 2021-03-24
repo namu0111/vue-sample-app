@@ -47,7 +47,7 @@ const DELETE_CONTACT = gql`
     mutation deleteContact(
         $id: Int!
     ) {
-        deleteContacts(where: {id: {_eq: $id}}){
+        delete_contacts(where: {id: {_eq: $id}}){
           affected_rows
         }
     }
