@@ -1,15 +1,16 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase'
-import login from './modules/login';
 import auth from './modules/auth';
+import login_user from './modules/login_user';
 // import createPersistedState from "vuex-persistedstate";
+import createPersistedAuthState from "vuex-persistedstate";
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    login_user: {},
+    // login_user: {},
     miniVariant: true,
     addresses: [],
     // authToken: {},
@@ -18,12 +19,12 @@ export default new Vuex.Store({
     // setAuthToken (state, token) {
     //   state.authToken = token
     // },
-    setLoginUser (state, user) {
-      state.login_user = user
-    },
-    deleteLoginUser (state) {
-      state.login_user = null
-    },
+    // setLoginUser (state, user) {
+    //   state.login_user = user
+    // },
+    // deleteLoginUser (state) {
+    //   state.login_user = null
+    // },
     toggleSideMenu (state) {
       state.miniVariant = !state.miniVariant
     },
@@ -43,12 +44,12 @@ export default new Vuex.Store({
     // setAuthToken ({ commit }, token) {
     //   commit('setAuthToken', token)
     // },
-    setLoginUser ({ commit }, user) {
-      commit('setLoginUser', user)
-    },
-    deleteLoginUser ({ commit }) {
-      commit('deleteLoginUser')
-    },
+    // setLoginUser ({ commit }, user) {
+    //   commit('setLoginUser', user)
+    // },
+    // deleteLoginUser ({ commit }) {
+    //   commit('deleteLoginUser')
+    // },
     toggleSideMenu ({ commit }) {
       commit('toggleSideMenu')
     },
@@ -71,8 +72,8 @@ export default new Vuex.Store({
     },
   },
   getters: {
-    userName: state => state.login_user ? state.login_user.name : '',
-    uid: state => state.login_user ? state.login_user.sub : null,
+    // userName: state => state.login_user ? state.login_user.name : '',
+    // uid: state => state.login_user ? state.login_user.sub : null,
     getAddressById: state => id => state.addresses.find(address => address.id === id),
     contactName: state => state.addresses ? state.addresses[state.addresses.length -1].name : '',
     contactMail: state => state.addresses ? state.addresses[state.addresses.length -1].email : '',
@@ -80,7 +81,15 @@ export default new Vuex.Store({
     contactAddress: state => state.addresses ? state.addresses[state.addresses.length -1].address : '',
   },
   modules: {
-    login,
     auth,
+    login_user,
   },
+  strict: true,
+  plugins: [
+    createPersistedAuthState({
+      key: 'Sample App',
+      paths: ['auth.authToken','login_user.login_user'],
+      storage: window.sessionStrage
+  }),
+  ]
 })
