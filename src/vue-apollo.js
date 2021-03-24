@@ -4,6 +4,7 @@ import VueApollo from 'vue-apollo'
 import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client'
 import { InMemoryCache } from "apollo-cache-inmemory";
 import store from '@/store';
+import auth from './store/modules/auth'
 
 // Install the vue plugin
 Vue.use(VueApollo)
@@ -43,7 +44,7 @@ const defaultOptions = {
   // Override the way the Authorization header is set
   // getAuth: (tokenName) => ...
   getAuth() {
-    const token = store.state.authToken;
+    const token = store.state.auth.authToken;
 
     return token ? `Bearer ${token}` : '';
   },

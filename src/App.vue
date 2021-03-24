@@ -30,6 +30,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import SideNav from './components/SideNav.vue';
+import auth from './store/modules/auth'
 
 export default {
   name: 'App',
@@ -56,7 +57,7 @@ export default {
       const claims = await this.$auth.getIdTokenClaims();
       const token = claims.__raw;
       console.log('token:', token);
-      await this.setAuthToken(token);
+      await this.$store.dispatch(`auth/setAuthToken`,token);
     },
     login() {
       this.$auth.loginWithRedirect();
@@ -77,8 +78,10 @@ export default {
         'toggleSideMenu',
         'setLoginUser',
         'deleteLoginUser',
-        'setAuthToken',
-      ]
+      ],
+      auth[
+        'setAuthToken'
+      ],
     )
   },
 };

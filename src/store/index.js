@@ -2,21 +2,22 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import firebase from 'firebase'
 import login from './modules/login';
+import auth from './modules/auth';
+// import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex)
-
 
 export default new Vuex.Store({
   state: {
     login_user: {},
     miniVariant: true,
     addresses: [],
-    authToken: {},
+    // authToken: {},
   },  
   mutations: {
-    setAuthToken (state, token) {
-      state.authToken = token
-    },
+    // setAuthToken (state, token) {
+    //   state.authToken = token
+    // },
     setLoginUser (state, user) {
       state.login_user = user
     },
@@ -39,9 +40,9 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    setAuthToken ({ commit }, token) {
-      commit('setAuthToken', token)
-    },
+    // setAuthToken ({ commit }, token) {
+    //   commit('setAuthToken', token)
+    // },
     setLoginUser ({ commit }, user) {
       commit('setLoginUser', user)
     },
@@ -80,5 +81,6 @@ export default new Vuex.Store({
   },
   modules: {
     login,
+    auth,
   },
 })
