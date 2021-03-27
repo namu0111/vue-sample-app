@@ -88,7 +88,7 @@ export default new Vuex.Store({
   plugins: [
     createPersistedAuthState({
       key: 'Sample App',
-      paths: ['auth.authToken','login_user.login_user'],
+      paths: ['auth.authToken','auth.authRole','login_user.login_user'],
       storage: window.sessionStrage
   }),
   ]

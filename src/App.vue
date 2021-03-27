@@ -21,6 +21,9 @@
        <SideNav/>
       </v-container>
       <v-container align-start>
+       <Error />
+      </v-container>
+      <v-container align-start>
         <router-view/>
       </v-container>
     </v-content>
@@ -30,14 +33,17 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import SideNav from './components/SideNav.vue';
+import Error from "./components/Error";
 import auth from './store/modules/auth'
 import login_user from './store/modules/login_user'
+import jwt_decode from "jwt-decode";
 
 export default {
   name: 'App',
 
   components: {
     SideNav,
+    Error,
   },
   async beforeUpdate () {
     if(this.$auth.isAuthenticated){ 
@@ -61,9 +67,17 @@ export default {
   methods: {
     async getClaims () {
       const claims = await this.$auth.getIdTokenClaims();
+      console.log('claims:', claims);
       const token = claims.__raw;
       console.log('token:', token);
       await this.$store.dispatch(`auth/setAuthToken`,token);
+      const jwt = token;
+      const decoded = jwt_decode(jwt);
+      const role = decoded['https://hasura.io/jwt/claims']['x-hasura-role']
+      console.log('decode:', decoded);
+      console.log('role:', role)
+      await this.$store.dispatch(`auth/setAuthRole`,role);
+      console.log(this.$store.state.auth.authRole)
     },
     async setAuth0LoginUser(){
       const userInfo = this.$auth.user
@@ -71,7 +85,7 @@ export default {
       await this.$store.dispatch(`login_user/setLoginUser`,userInfo);
     },
     login() {
-      this.$auth.loginWithRedirect();
+      this.$auth.loginWithRedirect({audience: process.env.VUE_APP_AUDIENCE});
     },
     logout() {
       this.$auth.logout({
@@ -85,7 +99,8 @@ export default {
         'deleteLoginUser',
       ],
       auth[
-        'setAuthToken'
+        'setAuthToken',
+        'setAuthRole'
       ],
       login_user[
         'setLoginUser'

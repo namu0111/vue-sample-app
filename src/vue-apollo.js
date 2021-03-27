@@ -4,7 +4,6 @@ import VueApollo from 'vue-apollo'
 import { createApolloClient, restartWebsockets } from 'vue-cli-plugin-apollo/graphql-client'
 import { InMemoryCache } from "apollo-cache-inmemory";
 import store from '@/store';
-// import auth from './store/modules/auth'
 
 // Install the vue plugin
 Vue.use(VueApollo)
@@ -56,6 +55,11 @@ const defaultOptions = {
   // clientState: { resolvers: { ... }, defaults: { ... } }
   cache: new InMemoryCache(),
   connectToDevTool: true,
+  httpLinkOptions: {
+    headers: {
+      'x-hasura-role': store.state.auth.authRole
+    }
+  },
 }
 
 // Call this in the Vue app file
@@ -64,7 +68,7 @@ export function createProvider (options = {}) {
   const { apolloClient, wsClient } = createApolloClient({
     ...defaultOptions,
     ...options,
-  })
+  }) 
   apolloClient.wsClient = wsClient
 
   // Create vue apollo provider
@@ -85,29 +89,30 @@ export function createProvider (options = {}) {
 }
 
 // Manually call this when user log in
-export async function onLogin (apolloClient, token) {
-  if (typeof localStorage !== 'undefined' && token) {
-    localStorage.setItem(AUTH_TOKEN, token)
-  }
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
-  try {
-    await apolloClient.resetStore()
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('%cError on cache reset (login)', 'color: orange;', e.message)
-  }
-}
+// export async function onLogin (apolloClient, token) {
+//   if (typeof localStorage !== 'undefined' && token) {
+//     localStorage.setItem(AUTH_TOKEN, token)
+//   }
+//   if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
+//   try {
+//     await apolloClient.resetStore()
+//   } catch (e) {
+//     // eslint-disable-next-line no-console
+//     console.log('%cError on cache reset (login)', 'color: orange;', e.message)
+//   }
+// }
 
 // Manually call this when user log out
-export async function onLogout (apolloClient) {
-  if (typeof localStorage !== 'undefined') {
-    localStorage.removeItem(AUTH_TOKEN)
-  }
-  if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
-  try {
-    await apolloClient.resetStore()
-  } catch (e) {
-    // eslint-disable-next-line no-console
-    console.log('%cError on cache reset (logout)', 'color: orange;', e.message)
-  }
-}
+// export async function onLogout (apolloClient) {
+//   if (typeof localStorage !== 'undefined') {
+//     localStorage.removeItem(AUTH_TOKEN)
+//   }
+//   if (apolloClient.wsClient) restartWebsockets(apolloClient.wsClient)
+//   try {
+//     await apolloClient.resetStore()
+//   } catch (e) {
+//     // eslint-disable-next-line no-console
+//     console.log('%cError on cache reset (logout)', 'color: orange;', e.message)
+//   }
+// }
+

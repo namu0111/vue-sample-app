@@ -4,7 +4,7 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 // Import the Auth0 configuration
-import { domain, clientId } from "../auth_config.json";
+import { domain, clientId, audience } from "../auth_config.json";
 // Import the plugin here
 import { Auth0Plugin } from "./auth";
 // GraphQL
@@ -14,6 +14,7 @@ import { createProvider } from './vue-apollo';
 Vue.use(Auth0Plugin, {
   domain,
   clientId,
+  audience,
   onRedirectCallback: appState => {
     router.push(
       appState && appState.targetUrl

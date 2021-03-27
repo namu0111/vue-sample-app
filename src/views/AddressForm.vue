@@ -29,6 +29,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
 import gql from "graphql-tag";
+import login_user from '../store/modules/login_user'
 
 const ADD_CONTACT = gql`
     mutation addContact(
@@ -70,7 +71,12 @@ mutation updateContact(
 
 export default {
   computed: {
-    ...mapGetters(['contactName','contactMail','contactTelephone','contactAddress', 'uid'])
+    ...mapGetters(
+      ['contactName','contactMail','contactTelephone','contactAddress', 'uid'],
+      login_user[
+        'userId'
+      ]
+      )
   },
   data () {
     return {
@@ -89,7 +95,7 @@ export default {
       const mail = this.$store.getters.contactMail
       const telephone = this.$store.getters.contactTelephone
       const address = this.$store.getters.contactAddress
-      const created_by = this.$store.getters.uid
+      const created_by = this.$store.getters["login_user/userId"]
       const id = this.$route.params.address_id
       if (this.$route.params.address_id) {
         console.log(this.$route.params.address_id)
