@@ -6,7 +6,7 @@ import Callback from "../views/Callback.vue";
 import Addresses from '../views/Addresses.vue'
 import AddressForm from '../views/AddressForm.vue'
 import Profile from "../views/Profile.vue";
-import Error from "../views/Error.vue";
+import Error from "../components/Error.vue";
 
 Vue.use(VueRouter)
 

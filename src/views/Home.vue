@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 v-if="!$auth.isAuthenticated">Hello, {{ userName }}</h1>
+    <h1 v-if="$auth.isAuthenticated">Hello, {{ this.$store.getters["login_user/userName"] }}</h1>
     <p>
       This is Sample App.
     </p>

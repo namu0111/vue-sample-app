@@ -6,10 +6,19 @@
 
 <script>
 export default {
-  methods: {
-    
-  },
-};
+  name: 'callback',
+  async created() {
+   try {
+     const user = await this.$auth.getUser();
+     console.log(user)
+    //  const path = user ? '/addresses' : '/error';
+    //  location.href = path;
+   } catch (e) {
+     console.log(e)
+     location.href = '/error';
+   }
+ }
+}
 </script>
 
 <style scoped>
