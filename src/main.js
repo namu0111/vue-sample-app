@@ -4,11 +4,15 @@ import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify';
 // Import the Auth0 configuration
-import { domain, clientId, audience } from "../auth_config.json";
+// import { domain, clientId, audience } from "../auth_config.json";
 // Import the plugin here
 import { Auth0Plugin } from "./auth";
 // GraphQL
 import { createProvider } from './vue-apollo';
+
+const domain = process.env.VUE_APP_DOMAIN;
+const clientId = process.env.VUE_APP_CLIENTID;
+const audience = process.env.VUE_APP_AUTH0_AUDIENCE;
 
 // Install the authentication plugin here
 Vue.use(Auth0Plugin, {

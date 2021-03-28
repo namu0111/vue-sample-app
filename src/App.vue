@@ -71,13 +71,18 @@ export default {
       const token = claims.__raw;
       console.log('token:', token);
       await this.$store.dispatch(`auth/setAuthToken`,token);
-      const jwt = token;
-      const decoded = jwt_decode(jwt);
-      const role = decoded['https://hasura.io/jwt/claims']['x-hasura-role']
-      console.log('decode:', decoded);
-      console.log('role:', role)
-      await this.$store.dispatch(`auth/setAuthRole`,role);
-      console.log(this.$store.state.auth.authRole)
+
+      // const jwt = token;
+      // const decoded = jwt_decode(jwt);
+      // const role = decoded['https://hasura.io/jwt/claims']['x-hasura-role']
+      // console.log('decode:', decoded);
+      // console.log('role:', role)
+      
+      const accessToken = await this.$auth.getTokenSilently();
+      const decodeAccessToken = jwt_decode(accessToken);
+      const decodeAccessTokenRole = decodeAccessToken['https://hasura.io/jwt/claims/roles']
+      console.log("access:",decodeAccessTokenRole);
+      await this.$store.dispatch(`auth/setAuthRole`,decodeAccessTokenRole);
     },
     async setAuth0LoginUser(){
       const userInfo = this.$auth.user
