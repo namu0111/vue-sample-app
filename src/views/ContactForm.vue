@@ -33,6 +33,7 @@
                 @change="$v.content.$touch()"
                 @blur="$v.content.$touch()"
               ></v-textarea>
+              <!-- <input type="hidden" v-model="_subject" name="_subject" value="お問い合わせを受領しました" /> -->
                <div class="text-center">
                  <v-btn @click="$router.push({ name: 'home' })">Return Home</v-btn>
                  <v-btn color="info" class="ml-2" @click="submit">Submit</v-btn>
@@ -81,11 +82,6 @@
         return errors
       },
     },
-    // methods: {
-    //   submit () {
-    //     this.$v.$touch()
-    //   },
-    // },
     methods: {
       async submit() {
         this.$v.$touch()
@@ -93,6 +89,8 @@
           name: this.name,
           email: this.email,
           content: this.content,
+          _replyto: this.email,
+          _subject: 'お問い合わせを受領しました',
         }
         try{
           if (!this.$v.$invalid) {
