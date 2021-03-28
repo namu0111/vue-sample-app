@@ -14,6 +14,7 @@
           <v-btn text v-if="$auth.isAuthenticated" link :to="{ name: 'profile'}" >{{ this.$store.getters["login_user/userName"] }}</v-btn>
           <!-- show logout when authenticated -->
           <v-btn text @click="logout" v-if="$auth.isAuthenticated">Auth0 Log out</v-btn>
+          <v-btn text @click="$router.push({ name: 'contact-form' })">Contact</v-btn>
         </v-toolbar-items>
     </v-app-bar>
     <v-content>

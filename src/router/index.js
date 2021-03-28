@@ -6,6 +6,8 @@ import Callback from "../views/Callback.vue";
 import Addresses from '../views/Addresses.vue'
 import AddressForm from '../views/AddressForm.vue'
 import Profile from "../views/Profile.vue";
+import ContactForm from "../views/ContactForm.vue";
+import ContactFormThanks from "../views/ContactFormThanks.vue";
 import Error from "../components/Error.vue";
 
 Vue.use(VueRouter)
@@ -47,6 +49,16 @@ const routes = [
     name: "profile",
     component: Profile,
     beforeEnter: authGuard,
+  },
+  {
+    path: "/contact-form",
+    name: "contact-form",
+    component: ContactForm,
+  },
+  {
+    path: "/contact-form-thanks",
+    name: "contact-form-thanks",
+    component: ContactFormThanks,
   },
   {
     path: "/error",

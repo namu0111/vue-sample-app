@@ -9,6 +9,9 @@ import vuetify from './plugins/vuetify';
 import { Auth0Plugin } from "./auth";
 // GraphQL
 import { createProvider } from './vue-apollo';
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+import Vuelidate from 'vuelidate'
 
 const domain = process.env.VUE_APP_DOMAIN;
 const clientId = process.env.VUE_APP_CLIENTID;
@@ -29,6 +32,9 @@ Vue.use(Auth0Plugin, {
 });
 
 Vue.config.productionTip = false;
+
+Vue.use(VueAxios, axios)
+Vue.use(Vuelidate)
 
 new Vue({
   router,
