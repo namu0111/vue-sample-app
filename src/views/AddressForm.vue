@@ -24,6 +24,7 @@
                 required
                 @input="$v.telephone.$touch()"
                 @blur="$v.telephone.$touch()"
+                :value="contacts_by_pk.telephone"
               ></v-text-field>
               <v-text-field
                 v-model="email"
@@ -32,6 +33,7 @@
                 required
                 @input="$v.email.$touch()"
                 @blur="$v.email.$touch()"
+                :value="contacts_by_pk.mail"
               ></v-text-field>
               <v-textarea
                 v-model="address"
@@ -40,6 +42,7 @@
                 required
                 @change="$v.address.$touch()"
                 @blur="$v.address.$touch()"
+                :value="contacts_by_pk.address"
               ></v-textarea>
                <div class="text-center">
                  <v-btn @click="$router.push({ name: 'addresses' })">キャンセル</v-btn>
@@ -98,7 +101,27 @@ mutation updateContact(
 }
 `;
 
+const GET_CONTACT = gql`
+  query getContact (
+    $id: Int!
+  ){
+    contacts_by_pk (id: $id) {
+      id
+      name
+      mail
+      telephone
+      address
+    }
+  }
+`;
+
 export default {
+  async beforeUpdate() {
+    this.name = await this.contacts_by_pk.name
+    this.email = await this.contacts_by_pk.mail
+    this.telephone = await this.contacts_by_pk.telephone
+    this.address = await this.contacts_by_pk.address
+  },
   computed: {
     ...mapGetters(
       ['contactName','contactMail','contactTelephone','contactAddress', 'uid'],
@@ -145,7 +168,9 @@ export default {
       telephone: null, 
       address: null,
       created_by: null,
-      addresses: {}
+      addresses: {},
+      id: this.$route.params.address_id,
+      contact: [],
     }
   },
   methods: {
@@ -196,7 +221,7 @@ export default {
             this.addAddress(this.address)
             console.log('add')
           }
-          this.$router.push({ name: 'addresses' })
+          // this.$router.push({ name: 'addresses' })
         }else{
           console.log("validate error")
         }
@@ -207,6 +232,16 @@ export default {
       this.addresses = {}
     },
     ...mapActions(['addAddress'])
+  },
+  apollo: {
+    contacts_by_pk: {
+      query: GET_CONTACT,
+      variables() {
+        return {
+          id: this.id
+        }
+      },
+    }
   },
 };
 </script>
