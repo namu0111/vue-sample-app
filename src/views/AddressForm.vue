@@ -24,7 +24,6 @@
                 required
                 @input="$v.telephone.$touch()"
                 @blur="$v.telephone.$touch()"
-                :value="contacts_by_pk.telephone"
               ></v-text-field>
               <v-text-field
                 v-model="email"
@@ -33,7 +32,6 @@
                 required
                 @input="$v.email.$touch()"
                 @blur="$v.email.$touch()"
-                :value="contacts_by_pk.mail"
               ></v-text-field>
               <v-textarea
                 v-model="address"
@@ -42,7 +40,6 @@
                 required
                 @change="$v.address.$touch()"
                 @blur="$v.address.$touch()"
-                :value="contacts_by_pk.address"
               ></v-textarea>
                <div class="text-center">
                  <v-btn @click="$router.push({ name: 'addresses' })">キャンセル</v-btn>
@@ -116,11 +113,23 @@ const GET_CONTACT = gql`
 `;
 
 export default {
+  async created () {
+    console.log("created")
+    if(!this.$route.params.address_id) {
+      this.id = 0
+    }
+  },
   async beforeUpdate() {
-    this.name = await this.contacts_by_pk.name
-    this.email = await this.contacts_by_pk.mail
-    this.telephone = await this.contacts_by_pk.telephone
-    this.address = await this.contacts_by_pk.address
+    console.log("beforeUpdate")
+    if (this.$route.params.address_id) {
+      console.log("edit")
+      this.name = await this.contacts_by_pk.name
+      this.email = await this.contacts_by_pk.mail
+      this.telephone = await this.contacts_by_pk.telephone
+      this.address = await this.contacts_by_pk.address
+    }else{
+      console.log("add")
+    }
   },
   computed: {
     ...mapGetters(
@@ -163,11 +172,11 @@ export default {
   },
   data () {
     return {
-      name: null, 
-      email: null, 
-      telephone: null, 
-      address: null,
-      created_by: null,
+      name: '', 
+      email: '', 
+      telephone: '', 
+      address: '',
+      created_by: '',
       addresses: {},
       id: this.$route.params.address_id,
       contact: [],
