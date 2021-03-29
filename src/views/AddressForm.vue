@@ -119,7 +119,7 @@ export default {
       this.id = 0
     }
   },
-  async beforeUpdate() {
+  async beforeMount() {
     console.log("beforeUpdate")
     if (this.$route.params.address_id) {
       console.log("edit")
