@@ -29,21 +29,11 @@
 </template>
 
 <script>
-import gql from 'graphql-tag';
+// import gql from 'graphql-tag';
 import ContactDeleteConfirmModal from '../components/ContactDeleteConfirmModal.vue';
+import { getContacts } from '../graphql/contacts/contacts-query.gql'
 
-const GET_CONTACTS = gql`
-  query getContacts {
-    contacts (order_by: {updated_at: desc}) {
-      id
-      name
-      mail
-      telephone
-      address
-      updated_at
-    }
-  }
-`;
+const GET_CONTACTS = getContacts
 
 export default {
   components: {

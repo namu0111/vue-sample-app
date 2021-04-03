@@ -1,0 +1,23 @@
+
+query getContact (
+    $id: Int!
+    ){
+    contacts_by_pk (id: $id) {
+        id
+        name
+        mail
+        telephone
+        address
+    }
+},
+
+query getContacts {
+    contacts (order_by: {updated_at: desc}) {
+    id
+    name
+    mail
+    telephone
+    address
+    updated_at
+    }
+}

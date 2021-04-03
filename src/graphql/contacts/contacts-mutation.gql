@@ -1,0 +1,33 @@
+mutation updateContact(
+      $id: Int!
+      $name: String!
+      $email: String!
+      $telephone: String!
+      $address: String!
+    ){
+  update_contacts(where: {id: {_eq: $id}}, 
+  _set: {name: $name, mail: $email, telephone: $telephone, address: $address}) {
+    returning {
+      id
+    }
+  }
+},
+
+mutation addContact(
+    $name: String!
+    $email: String!
+    $telephone: String!
+    $address: String!
+    $created_by: String!
+){
+insert_contacts(objects: [
+    {
+    name: $name, mail: $email, telephone: $telephone, address: $address, created_by: $created_by
+    }
+    ])
+    {
+    returning {
+    id
+    }
+    }
+}

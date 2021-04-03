@@ -56,61 +56,15 @@
 
 <script>
 import { mapActions, mapGetters } from 'vuex'
-import gql from "graphql-tag";
+// import gql from "graphql-tag";
 import login_user from '../store/modules/login_user'
 import { required, email } from 'vuelidate/lib/validators'
+import { getContact } from '../graphql/contacts/contacts-query.gql'
+import { updateContact, addContact } from '../graphql/contacts/contacts-mutation.gql'
 
-const ADD_CONTACT = gql`
-    mutation addContact(
-      $name: String!
-      $email: String!
-      $telephone: String!
-      $address: String!
-      $created_by: String!
-    ){
-    insert_contacts(objects: [
-      {
-        name: $name, mail: $email, telephone: $telephone, address: $address, created_by: $created_by
-        }
-      ])
-      {
-        returning {
-        id
-        }
-      }
-    }
-`;
-
-const UPDATE_CONTACT = gql`
-mutation updateContact(
-      $id: Int!
-      $name: String!
-      $email: String!
-      $telephone: String!
-      $address: String!
-    ){
-  update_contacts(where: {id: {_eq: $id}}, 
-  _set: {name: $name, mail: $email, telephone: $telephone, address: $address}) {
-    returning {
-      id
-    }
-  }
-}
-`;
-
-const GET_CONTACT = gql`
-  query getContact (
-    $id: Int!
-  ){
-    contacts_by_pk (id: $id) {
-      id
-      name
-      mail
-      telephone
-      address
-    }
-  }
-`;
+const UPDATE_CONTACT = updateContact
+const ADD_CONTACT = addContact
+const GET_CONTACT = getContact
 
 export default {
   async beforeCreated () {
