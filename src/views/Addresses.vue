@@ -24,11 +24,13 @@
         </v-data-table>
       </v-flex>
     </v-layout>
+    <ContactDeleteConfirmModal ref='deleteDialog' :value=deleteContactId  />
   </v-container>
 </template>
 
 <script>
 import gql from 'graphql-tag';
+import ContactDeleteConfirmModal from '../components/ContactDeleteConfirmModal.vue';
 
 const GET_CONTACTS = gql`
   query getContacts {
@@ -43,32 +45,15 @@ const GET_CONTACTS = gql`
   }
 `;
 
-const DELETE_CONTACT = gql`
-    mutation deleteContact(
-        $id: Int!
-    ) {
-        delete_contacts(where: {id: {_eq: $id}}){
-          affected_rows
-        }
-    }
-`;
-
 export default {
+  components: {
+    ContactDeleteConfirmModal,
+  },
   methods: {
-    deleteConfirm (id) {
-        if (confirm('削除してよろしいですか？')) {
-          this.deleteContact(id)
-        }
+    deleteConfirm (id){
+      this.$refs.deleteDialog.open()
+      this.deleteContactId = id
     },
-    deleteContact(id) {
-        this.$apollo.mutate({
-            mutation: DELETE_CONTACT,
-            variables: {
-                id
-            },
-            refetchQueries: ["getContacts"]
-        });            
-      },
   },
   data () {
     return {
@@ -81,6 +66,7 @@ export default {
         { text: 'Action', value: 'action', sortable: false }
       ],
       contacts: [],
+      deleteContactId: '',
     }
   },
   apollo: {
