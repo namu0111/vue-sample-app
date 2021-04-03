@@ -113,16 +113,25 @@ const GET_CONTACT = gql`
 `;
 
 export default {
+  async beforeCreated () {
+    console.log("beforeCreated")
+  },
   async created () {
     console.log("created")
     if(!this.$route.params.address_id) {
       this.id = 0
     }
   },
-  async beforeMount() {
-    console.log("beforeUpdate")
+  async beforeMount () {
+    await console.log("beforeMount")
+  },
+  async mounted() {
+    console.log("mounted")
+    // await this.$apollo.queries.contacts_by_pk.refetch().then(data => console.log("data:", data))
+    await this.$apollo.queries.contacts_by_pk.refetch()
     if (this.$route.params.address_id) {
       console.log("edit")
+      console.log("name mounted: ",this.contacts_by_pk)
       this.name = await this.contacts_by_pk.name
       this.email = await this.contacts_by_pk.mail
       this.telephone = await this.contacts_by_pk.telephone
@@ -131,6 +140,9 @@ export default {
       console.log("add")
     }
   },
+  async beforeUpdate () {
+    console.log("beforeUpdate")
+  }, 
   computed: {
     ...mapGetters(
       ['contactName','contactMail','contactTelephone','contactAddress', 'uid'],
