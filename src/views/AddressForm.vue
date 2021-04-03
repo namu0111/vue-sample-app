@@ -242,7 +242,7 @@ export default {
             this.addAddress(this.address)
             console.log('add')
           }
-          // this.$router.push({ name: 'addresses' })
+          this.$router.push({ name: 'addresses' })
         }else{
           console.log("validate error")
         }
