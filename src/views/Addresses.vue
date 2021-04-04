@@ -1,5 +1,6 @@
 <template>
   <v-container text-xs-center justify-center>
+
     <v-layout row wrap>
       <v-flex xs12>
         <h1>連絡先一覧</h1>
@@ -23,7 +24,13 @@
       </v-flex>
 
       <v-flex xs12 mt-5 justify-center>
-        <v-data-table :headers='headers' :items='contacts' :search="search" >
+
+        <v-data-table
+        :headers='headers' 
+        :items='contacts' 
+        :search="search" 
+        class="elevation-1"
+        >
           <template v-slot:[`item.action`]="{ item }">
             <!-- <router-link :to="{ name: 'address_edit', params: { address_id: item.id }}">
               <v-icon small class="mr-2">mdi-pencil</v-icon>
@@ -34,8 +41,28 @@
         </v-data-table>
       </v-flex>
     </v-layout>
-    <ContactEditForm ref='editDialog' :value=actionContactId />
-    <ContactDeleteConfirmModal ref='deleteDialog' :value=actionContactId  />
+
+    <v-snackbar
+      top
+      v-model="snack"
+      :timeout="3000"
+      :color="snackColor"
+    >
+      {{ snackText }}
+
+      <template v-slot:action="{ attrs }">
+        <v-btn
+          v-bind="attrs"
+          text
+          @click="snack = false"
+        >
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>  
+    
+    <ContactEditForm ref='editDialog' :value=actionContactId @snack='snackSave' />
+    <ContactDeleteConfirmModal ref='deleteDialog' :value=actionContactId @snack='snackSave'  />
   </v-container>
 </template>
 
@@ -70,9 +97,34 @@ export default {
         console.log("actionContactId: ", null)
       }
     },
+    snackSave (color, text) {
+      console.log('save')
+      this.snack = true
+      this.snackColor = color
+      this.snackText = text
+      // this.snackColor = 'success'
+      // this.snackText = 'Data saved'
+    },   
+    snackCancel () {
+      this.snack = true
+      this.snackColor = 'error'
+      this.snackText = 'Canceled'
+    },
+    snackOpen () {
+      this.snack = true
+      this.snackColor = 'info'
+      this.snackText = 'Dialog opened'
+    },
+    snackClose () {
+      console.log('Dialog closed')
+    }, 
   },
   data () {
     return {
+      snack: false,
+      snackColor: '',
+      snackText: '',  
+      alert: false,
       search: '',
       headers: [
         { text: '名前', value: 'name' },

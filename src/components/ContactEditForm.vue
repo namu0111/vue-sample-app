@@ -227,6 +227,7 @@ export default {
             this.close();
             this.$v.$reset();
             this.addresses = {}
+            this.$emit('snack', 'success', 'Data saved')
             }else{
             console.log("validate error")
             }
@@ -234,7 +235,6 @@ export default {
             console.log("Failed!")
             console.log("error:", error)
         }  
-        this.addresses = {}
         },
         ...mapActions(['addAddress'])
     },

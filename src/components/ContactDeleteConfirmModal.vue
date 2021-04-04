@@ -60,9 +60,11 @@ const DELETE_CONTACT = gql`
      deleteContact(){
        this.deleteContactMutate(this.value)
        console.log('deleted')
+       this.$emit('snack', 'success', 'Data deleted')
        this.dialog = false
      },
      close(){
+       this.$emit('snack', 'error', 'Canceled')
        this.dialog = false
      },
     deleteContactMutate(id) {
