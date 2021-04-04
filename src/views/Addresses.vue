@@ -6,47 +6,74 @@
       </v-flex>
 
       <v-flex xs12 mt-5 mr-5 text-right>
-        <router-link :to="{ name: 'address_edit' }">
-          <v-btn color="info">
-            連絡先追加
+        <v-card-title>
+          <v-text-field
+            v-model="search"
+            append-icon="mdi-magnify"
+            label="Search"
+            single-line
+            hide-details
+          ></v-text-field>
+          <v-spacer></v-spacer>
+          <v-spacer></v-spacer>
+          <v-btn color="info" @click="editForm()">
+            連絡先追加(Modal)
           </v-btn>
-        </router-link>
+        </v-card-title>
       </v-flex>
 
       <v-flex xs12 mt-5 justify-center>
-        <v-data-table :headers='headers' :items='contacts'>
+        <v-data-table :headers='headers' :items='contacts' :search="search" >
           <template v-slot:[`item.action`]="{ item }">
-            <router-link :to="{ name: 'address_edit', params: { address_id: item.id }}">
+            <!-- <router-link :to="{ name: 'address_edit', params: { address_id: item.id }}">
               <v-icon small class="mr-2">mdi-pencil</v-icon>
-            </router-link>
+            </router-link> -->
+            <v-icon small class="mr-2" @click="editForm(item.id)">mdi-pencil</v-icon>
             <v-icon small class="mr-2" @click="deleteConfirm(item.id)">mdi-delete</v-icon>
           </template>
         </v-data-table>
       </v-flex>
     </v-layout>
-    <ContactDeleteConfirmModal ref='deleteDialog' :value=deleteContactId  />
+    <ContactEditForm ref='editDialog' :value=actionContactId />
+    <ContactDeleteConfirmModal ref='deleteDialog' :value=actionContactId  />
   </v-container>
 </template>
 
 <script>
 // import gql from 'graphql-tag';
 import ContactDeleteConfirmModal from '../components/ContactDeleteConfirmModal.vue';
-import { getContacts } from '../graphql/contacts/contacts-query.gql'
+import ContactEditForm from '../components/ContactEditForm.vue';
+import { getContacts } from '../graphql/contacts/contacts-query.gql';
 
 const GET_CONTACTS = getContacts
 
 export default {
   components: {
     ContactDeleteConfirmModal,
+    ContactEditForm,
   },
   methods: {
-    deleteConfirm (id){
-      this.$refs.deleteDialog.open()
-      this.deleteContactId = id
+    async deleteConfirm (id){
+        await this.setContactId(id);
+        await this.$refs.deleteDialog.open();
+    },
+    async editForm (id){
+      await this.setContactId(id);
+      await this.$refs.editDialog.open();
+    },
+    setContactId(id){
+      if(id){
+        this.actionContactId = id
+        console.log("actionContactId: ", this.actionContactId)
+      }else{
+        this.actionContactId = id
+        console.log("actionContactId: ", null)
+      }
     },
   },
   data () {
     return {
+      search: '',
       headers: [
         { text: '名前', value: 'name' },
         { text: '電話番号', value: 'telephone' },
@@ -56,7 +83,7 @@ export default {
         { text: 'Action', value: 'action', sortable: false }
       ],
       contacts: [],
-      deleteContactId: '',
+      actionContactId: '',
     }
   },
   apollo: {
