@@ -9,7 +9,7 @@
         <v-card-title class="headline">
           Delete!
         </v-card-title>
-        <v-card-text>Are you sure you want to delete the {{ value }} data? If you delete it, it cannot be restored.</v-card-text>
+        <v-card-text>Are you want id:{{ value }} delete?</v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
