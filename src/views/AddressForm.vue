@@ -81,7 +81,6 @@ export default {
   },
   async mounted() {
     console.log("mounted")
-    // await this.$apollo.queries.contacts_by_pk.refetch().then(data => console.log("data:", data))
     await this.$apollo.queries.contacts_by_pk.refetch()
     if (this.$route.params.address_id) {
       console.log("edit")
